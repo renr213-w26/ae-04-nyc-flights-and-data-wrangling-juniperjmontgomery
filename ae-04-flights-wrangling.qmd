@@ -286,7 +286,10 @@ Try these on your own, either in class if you finish early, or after class.
 ```{r}
 #| label: add-practice-1
 
-# add code here
+flights_delay <- flights %>%
+  filter(!is.na(dep_time)) %>%
+  select(year, month, day, dep_time, dep_delay) %>%
+  mutate(dep_delay_hours = dep_delay / 60)
 ```
 
 2.  For each airplane (uniquely identified by `tailnum`), use a `group_by()` paired with `summarize()` to find the sample size, mean, and standard deviation of flight distances. Then include only the top 5 and bottom 5 airplanes in terms of mean distance traveled per flight in the final data frame.
@@ -294,5 +297,12 @@ Try these on your own, either in class if you finish early, or after class.
 ```{r}
 #| label: add-practice-2
 
-# add code here
+flights %>%
+  group_by(tailnum) %>%
+  summarize(
+    n_flights = n(),
+    mean_dist = mean(distance, na.rm = TRUE),
+    sd_dist = sd(distance, na.rm = TRUE)) %>%
+  slice(c(slice_head(order_by = mean_dist, n = 5),
+          slice_tail(order_by = mean_dist, n = 5)))
 ```

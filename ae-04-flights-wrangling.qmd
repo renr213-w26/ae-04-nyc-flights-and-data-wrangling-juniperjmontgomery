@@ -62,7 +62,6 @@ flight_dep <- flights %>%
 
 flight_arr <- flights %>%
   select(contains("arr_"))
-
 ```
 
 ## Exercise 4 - `slice()`
@@ -72,7 +71,8 @@ flight_arr <- flights %>%
 ```{r}
 #| label: slice
 
-# add code here
+flights %>%
+  slice(1:5)
 ```
 
 -   Display the last two rows of the `flights` data frame.
@@ -80,7 +80,8 @@ flight_arr <- flights %>%
 ```{r}
 #| label: last-two
 
-# add code here
+flights  %>%
+  slice_tail(n = 2)
 ```
 
 ## Exercise 5 - `arrange()`
@@ -90,19 +91,23 @@ flight_arr <- flights %>%
 ```{r}
 #| label: arrange-delays
 
-# add code here
+flights %>%
+  arrange(dep_delay)
 ```
 
 -   Question: What does it mean for the `dep_delay` to have a negative value?
 
-Add your response here.
+    The flight was not delayed, and left early.
+
+<!-- -->
 
 -   Arrange the data by descending departure delay, so the flights with the longest departure delays will be at the top.
 
 ```{r}
 #| label: arrange-delays-desc
 
-# add code here
+flights %>%
+  arrange(desc(dep_delay))
 ```
 
 -   **Your turn:** Create a data frame that only includes the plane tail number (`tailnum`), carrier (`carrier`), and departure delay for the flight with the longest departure delay. What is the plane tail number (`tailnum`) for this flight?
@@ -110,8 +115,12 @@ Add your response here.
 ```{r}
 #| label: longest-delay
 
-# add code here
+flights %>%
+  slice_max(dep_delay, n=1) %>%
+  select(tailnum, carrier, dep_delay)
 ```
+
+The plane tail number w/ the longest departure delay is **N384HA**.
 
 ## Exercise 6 - `filter()`
 
@@ -120,7 +129,8 @@ Add your response here.
 ```{r}
 #| label: rdu
 
-# add code here
+flights %>%
+  filter(dest == "RDU")
 ```
 
 -   Filter for all rows where the destination airport is RDU and the arrival delay is less than 0.
@@ -128,12 +138,13 @@ Add your response here.
 ```{r}
 #| label: rdu-ontime
 
-# add code here
+flights %>%
+  filter(dest == "RDU", arr_delay < 0)
 ```
 
 -   **Your turn:** Describe what the code is doing in words.
 
-Add response here.
+This is filter by flights that have destinations RDU and GSO, either with an arrival delay less than zero OR a departure delay less than 0, i.e. this is looking at early arrival or early flights. 
 
 ```{r}
 #| label: nc-early

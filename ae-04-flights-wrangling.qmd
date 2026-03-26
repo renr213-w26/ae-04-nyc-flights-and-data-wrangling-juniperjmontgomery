@@ -181,7 +181,9 @@ flights |>
 ```{r}
 #| label: count-dest
 
-# add code here
+flights %>%
+  filter(origin %in% c("JFK", "LGA", "EWR")) %>%
+  count(dest)
 ```
 
 -   In which month was there the fewest number of flights? How many flights were there in that month?
@@ -189,16 +191,22 @@ flights |>
 ```{r}
 #| label: count-month
 
-# add code here
+flights %>%
+  count(month) %>%
+  slice_min(n, n=1)
 ```
+February, with 24 951 flights.
 
 -   **Your turn:** On which date (month + day) was there the largest number of flights? How many flights were there on that day?
 
 ```{r}
 #| label: count-date
 
-# add code here
+flights %>%
+  count(month, day) %>%
+  slice_max(n, n=1)
 ```
+November 27, with 1014 flights that day.
 
 ## Exercise 8 - `mutate()`
 

@@ -14,8 +14,7 @@ library(nycflights13)
 
 **Your turn:** Fill in the blanks:
 
-The `flights` data frame has \_\_\_ rows.
-Each row represents a \_\_\_.
+The `flights` data frame has `r nrow(flights)` rows. Each row represents a **flight**.
 
 ## Exercise 2
 
@@ -24,7 +23,7 @@ Each row represents a \_\_\_.
 ```{r}
 #| label: column-names
 
-# add code here
+names(flights)
 ```
 
 ## Exercise 3 - `select()`
@@ -34,7 +33,8 @@ Each row represents a \_\_\_.
 ```{r}
 #| label: select-vars
 
-# add code here
+flight_delays <- flights %>%
+  select(dep_delay, arr_delay)
 ```
 
 -   Make a data frame that keeps every variable except `dep_delay`.
@@ -42,7 +42,8 @@ Each row represents a \_\_\_.
 ```{r}
 #| label: exclude-vars
 
-# add code here
+flight_excl <- flights %>%
+  select(-dep_delay)
 ```
 
 -   Make a data frame that includes all variables between `year` through `dep_delay` (inclusive). These are all variables that provide information about the departure of each flight.
@@ -50,7 +51,8 @@ Each row represents a \_\_\_.
 ```{r}
 #| label: include-range
 
-# add code here
+flight_dep <- flights %>%
+  select(year:dep_delay)
 ```
 
 -   Use the `select` helper `contains()` to make a data frame that includes the variables associated with the arrival, i.e., contains the string `"arr\_"` in the name.
@@ -58,7 +60,9 @@ Each row represents a \_\_\_.
 ```{r}
 #| label: arr-vars
 
-# add code here
+flight_arr <- flights %>%
+  select(contains("arr_"))
+
 ```
 
 ## Exercise 4 - `slice()`

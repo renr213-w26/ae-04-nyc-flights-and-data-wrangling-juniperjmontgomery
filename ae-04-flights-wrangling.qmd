@@ -182,7 +182,6 @@ flights |>
 #| label: count-dest
 
 flights %>%
-  filter(origin %in% c("JFK", "LGA", "EWR")) %>%
   count(dest)
 ```
 
@@ -215,7 +214,9 @@ November 27, with 1014 flights that day.
 ```{r}
 #| label: calculate-mph
 
-# add code here
+flights %>%
+  mutate(air_time_hr = air_time /60,
+         mph = distance / air_time_hr)
 ```
 
 -   **Your turn:** First, count the number of flights each month, and then calculate the proportion of flights in each month. What proportion of flights take place in July?
@@ -223,15 +224,22 @@ November 27, with 1014 flights that day.
 ```{r}
 #| label: months-prop
 
-# add code here
+flights %>%
+  count(month) %>%
+  mutate(prop = n / sum(n)) %>%
+  filter(month == 7)
 ```
+8.7% of flights took place in July.
 
 -   Create a new variable, `rdu_bound`, which indicates whether the flight is to RDU or not. Then, for each departure airport (`origin`), calculate what proportion of flights originating from that airport are to RDU.
 
 ```{r}
 #| label: rdu-origin-prop
 
-# add code here
+flights %>%
+  mutate(rdu_bound = dest == "RDU") %>%
+  group_by(origin) %>%
+  summarize(prop_rdu = mean(rdu_bound))
 ```
 
 ## Exercise 9 - `summarize()`
@@ -241,7 +249,8 @@ November 27, with 1014 flights that day.
 ```{r}
 #| label: find-arrival-delay
 
-# add code here
+flights %>%
+  summarise(mean_arr_delay = mean(arr_delay, na.rm = TRUE))
 ```
 
 ## Exercise 10 - `group_by()`
@@ -251,7 +260,9 @@ November 27, with 1014 flights that day.
 ```{r}
 #| label: mean-arr-delay-month
 
-# add code here
+flights %>%
+  group_by(month) %>%
+  summarize(mean_arr_delay = mean(arr_delay, na.rm = TRUE))
 ```
 
 -   **Your turn:** What is the median departure delay for each airports around NYC (`origin`)? Which airport has the shortest median departure delay?
@@ -259,8 +270,12 @@ November 27, with 1014 flights that day.
 ```{r}
 #| label: median-dep-dely-origin
 
-# add code here
+flights %>%
+  group_by(origin) %>%
+  summarize(med_dep_delay = median(dep_delay, na.rm = TRUE))
 ```
+LGA has the shortest departure delay.
+
 
 # Additional Practice
 
